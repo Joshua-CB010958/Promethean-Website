@@ -83,12 +83,44 @@ const services = [
   },
 ];
 
+const addOns = [
+  {
+    id: 'maintenance',
+    name: 'Maintenance & Support',
+    priceRange: { min: 99, max: 499 },
+    displayPrice: '£99 - £499/month',
+    description: 'Ongoing updates, bug fixes, and technical support'
+  },
+  {
+    id: 'hosting',
+    name: 'Hosting & Infrastructure',
+    priceRange: { min: 49, max: 199 },
+    displayPrice: '£49 - £199/month',
+    description: 'Reliable hosting with monitoring and backups'
+  },
+  {
+    id: 'ai-monitoring',
+    name: 'AI Monitoring & Improvements',
+    priceRange: { min: 149, max: 599 },
+    displayPrice: '£149 - £599/month',
+    description: 'Continuous AI model optimization and monitoring'
+  },
+  {
+    id: 'sla',
+    name: 'SLA / Priority Support',
+    priceRange: { min: 199, max: 1000 },
+    displayPrice: '£199 - £1,000/month',
+    description: 'Guaranteed response times and priority assistance'
+  },
+];
+
 interface BookingPageProps {
   onBack: () => void;
 }
 
 export function BookingPage({ onBack }: BookingPageProps) {
   const [selectedServices, setSelectedServices] = useState<Record<string, string>>({});
+  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [step, setStep] = useState<'services' | 'details'>('services');
   const [formData, setFormData] = useState({
     name: '',
@@ -120,6 +152,48 @@ export function BookingPage({ onBack }: BookingPageProps) {
     return selectedServices[serviceId];
   };
 
+  const toggleAddOn = (addOnId: string) => {
+    setSelectedAddOns(prev => 
+      prev.includes(addOnId) 
+        ? prev.filter(id => id !== addOnId)
+        : [...prev, addOnId]
+    );
+  };
+
+  const calculateTotal = () => {
+    let min = 0;
+    let max = 0;
+    
+    // Calculate service prices
+    Object.entries(selectedServices).forEach(([serviceId, tier]) => {
+      const service = services.find(s => s.id === serviceId);
+      if (service) {
+        const priceString = service.packages[tier as keyof typeof service.packages];
+        const prices = priceString.match(/£([\d,]+)(?:-£([\d,]+))?/);
+        if (prices) {
+          const minPrice = parseInt(prices[1].replace(/,/g, ''));
+          const maxPrice = prices[2] ? parseInt(prices[2].replace(/,/g, '')) : minPrice;
+          min += minPrice;
+          max += maxPrice;
+        }
+      }
+    });
+
+    // Calculate add-on prices (monthly)
+    selectedAddOns.forEach(addOnId => {
+      const addOn = addOns.find(a => a.id === addOnId);
+      if (addOn) {
+        min += addOn.priceRange.min;
+        max += addOn.priceRange.max;
+      }
+    });
+
+    if (min === max) {
+      return `£${min.toLocaleString()}`;
+    }
+    return `£${min.toLocaleString()} - £${max.toLocaleString()}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -131,6 +205,11 @@ export function BookingPage({ onBack }: BookingPageProps) {
         return service ? `${service.title} - ${packageTier.charAt(0).toUpperCase() + packageTier.slice(1)} Package` : serviceId;
       });
 
+      const addOnSelections = selectedAddOns.map(addOnId => {
+        const addOn = addOns.find(a => a.id === addOnId);
+        return addOn ? `${addOn.name} - ${addOn.displayPrice}` : addOnId;
+      });
+
       const response = await fetch('/api/send-consultation', {
         method: 'POST',
         headers: {
@@ -139,6 +218,8 @@ export function BookingPage({ onBack }: BookingPageProps) {
         body: JSON.stringify({
           ...formData,
           selectedServices: serviceSelections,
+          selectedAddOns: addOnSelections,
+          estimatedTotal: calculateTotal(),
         }),
       });
 
@@ -155,6 +236,7 @@ export function BookingPage({ onBack }: BookingPageProps) {
             message: '',
           });
           setSelectedServices({});
+          setSelectedAddOns([]);
           setStep('services');
           setSubmitStatus('idle');
         }, 3000);
@@ -267,7 +349,42 @@ export function BookingPage({ onBack }: BookingPageProps) {
                 })}
               </div>
 
+              {Object.keys(selectedServices).length > 0 && (
+                <div className="add-ons-section">
+                  <h3 className="add-ons-title">Optional Add-Ons (Monthly)</h3>
+                  <p className="add-ons-subtitle">Enhance your solution with ongoing support and services</p>
+                  
+                  <div className="add-ons-grid">
+                    {addOns.map((addOn) => (
+                      <div
+                        key={addOn.id}
+                        className={`addon-card ${selectedAddOns.includes(addOn.id) ? 'selected' : ''}`}
+                        onClick={() => toggleAddOn(addOn.id)}
+                      >
+                        <div className="addon-checkbox">
+                          {selectedAddOns.includes(addOn.id) && <Check size={16} />}
+                        </div>
+                        <div className="addon-content">
+                          <h4 className="addon-title">{addOn.name}</h4>
+                          <p className="addon-price">{addOn.displayPrice}</p>
+                          <p className="addon-description">{addOn.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="booking-actions">
+                {Object.keys(selectedServices).length > 0 && (
+                  <div className="total-price">
+                    <span className="total-label">Estimated Total:</span>
+                    <span className="total-amount">{calculateTotal()}</span>
+                    {selectedAddOns.length > 0 && (
+                      <span className="total-note">+ £{selectedAddOns.length} add-on(s)/month</span>
+                    )}
+                  </div>
+                )}
                 <button
                   className="btn btn-primary"
                   disabled={Object.keys(selectedServices).length === 0}
@@ -309,6 +426,36 @@ export function BookingPage({ onBack }: BookingPageProps) {
                       );
                     })}
                   </div>
+
+                  {selectedAddOns.length > 0 && (
+                    <>
+                      <h4 className="summary-section-title">Add-Ons (Monthly)</h4>
+                      <div className="selected-services-list">
+                        {selectedAddOns.map((addOnId) => {
+                          const addOn = addOns.find(a => a.id === addOnId);
+                          if (!addOn) return null;
+                          return (
+                            <div key={addOnId} className="selected-service-chip">
+                              <Check size={16} />
+                              <div className="selected-service-details">
+                                <span className="service-name">{addOn.name}</span>
+                                <span className="addon-price-badge">{addOn.displayPrice}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+
+                  <div className="summary-total">
+                    <div className="summary-total-label">Estimated Total</div>
+                    <div className="summary-total-amount">{calculateTotal()}</div>
+                    {selectedAddOns.length > 0 && (
+                      <div className="summary-total-note">Includes {selectedAddOns.length} monthly add-on(s)</div>
+                    )}
+                  </div>
+
                   <button
                     className="btn btn-ghost"
                     onClick={() => setStep('services')}
@@ -670,11 +817,138 @@ export function BookingPage({ onBack }: BookingPageProps) {
           color: var(--color-accent-bright);
         }
 
+        .add-ons-section {
+          margin: var(--space-4xl) 0 var(--space-3xl);
+          padding: var(--space-2xl);
+          background: var(--color-surface);
+          border-radius: var(--radius-xl);
+          border: 1px solid var(--color-border);
+        }
+
+        .add-ons-title {
+          color: var(--color-text-primary);
+          margin-bottom: var(--space-sm);
+          text-align: center;
+        }
+
+        .add-ons-subtitle {
+          color: var(--color-text-secondary);
+          margin-bottom: var(--space-2xl);
+          text-align: center;
+          font-size: 0.95rem;
+        }
+
+        .add-ons-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: var(--space-lg);
+        }
+
+        .addon-card {
+          background: var(--color-surface-elevated);
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-lg);
+          cursor: pointer;
+          transition: all var(--transition-base);
+          display: flex;
+          gap: var(--space-md);
+          position: relative;
+        }
+
+        .addon-card:hover {
+          border-color: var(--color-primary-light);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
+        }
+
+        .addon-card.selected {
+          border-color: var(--color-primary);
+          background: rgba(99, 102, 241, 0.05);
+          box-shadow: 0 0 0 1px var(--color-primary);
+        }
+
+        .addon-checkbox {
+          width: 1.25rem;
+          height: 1.25rem;
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 2px;
+          transition: all var(--transition-base);
+        }
+
+        .addon-card.selected .addon-checkbox {
+          background: var(--color-primary);
+          border-color: var(--color-primary);
+          color: white;
+        }
+
+        .addon-content {
+          flex: 1;
+        }
+
+        .addon-title {
+          color: var(--color-text-primary);
+          font-size: 1rem;
+          margin-bottom: var(--space-xs);
+          font-weight: 600;
+        }
+
+        .addon-price {
+          color: var(--color-accent-bright);
+          font-size: 0.875rem;
+          font-weight: 600;
+          margin-bottom: var(--space-sm);
+        }
+
+        .addon-description {
+          color: var(--color-text-tertiary);
+          font-size: 0.85rem;
+          line-height: 1.5;
+        }
+
         .booking-actions {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: var(--space-md);
+          gap: var(--space-lg);
+        }
+
+        .total-price {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-xs);
+          padding: var(--space-xl);
+          background: var(--color-surface-elevated);
+          border-radius: var(--radius-lg);
+          border: 2px solid var(--color-primary);
+          min-width: 300px;
+        }
+
+        .total-label {
+          color: var(--color-text-secondary);
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+
+        .total-amount {
+          color: var(--color-text-primary);
+          font-size: 2rem;
+          font-weight: 700;
+          background: var(--gradient-primary);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .total-note {
+          color: var(--color-text-tertiary);
+          font-size: 0.8rem;
         }
 
         .booking-actions .btn {
@@ -711,6 +985,13 @@ export function BookingPage({ onBack }: BookingPageProps) {
         .selected-services-summary h3 {
           margin-bottom: var(--space-lg);
           color: var(--color-text-primary);
+        }
+
+        .summary-section-title {
+          margin: var(--space-lg) 0 var(--space-md);
+          color: var(--color-text-primary);
+          font-size: 0.95rem;
+          font-weight: 600;
         }
 
         .selected-services-list {
@@ -753,6 +1034,43 @@ export function BookingPage({ onBack }: BookingPageProps) {
           font-size: 0.75rem;
           font-weight: 600;
           width: fit-content;
+        }
+
+        .addon-price-badge {
+          color: var(--color-accent-bright);
+          font-size: 0.75rem;
+          font-weight: 600;
+        }
+
+        .summary-total {
+          background: var(--color-surface);
+          border: 2px solid var(--color-primary);
+          border-radius: var(--radius-lg);
+          padding: var(--space-lg);
+          margin-bottom: var(--space-lg);
+          text-align: center;
+        }
+
+        .summary-total-label {
+          color: var(--color-text-secondary);
+          font-size: 0.85rem;
+          margin-bottom: var(--space-xs);
+        }
+
+        .summary-total-amount {
+          color: var(--color-text-primary);
+          font-size: 1.75rem;
+          font-weight: 700;
+          background: var(--gradient-primary);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: var(--space-xs);
+        }
+
+        .summary-total-note {
+          color: var(--color-text-tertiary);
+          font-size: 0.75rem;
         }
 
         .booking-form {

@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Linkedin, Twitter, Github, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Twitter, Github, Facebook, Instagram } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -28,10 +28,9 @@ export function Footer() {
   };
 
   const socialLinks = [
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/company/promethean-ai-uk/', label: 'LinkedIn' },
+    { icon: Twitter, href: 'https://x.com/PrometheanAI_UK', label: 'Twitter' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
   ];
 
   return (
@@ -53,6 +52,8 @@ export function Footer() {
                     href={social.href}
                     className="social-link"
                     aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Icon size={20} />
                   </a>
@@ -108,19 +109,13 @@ export function Footer() {
               <div className="contact-item">
                 <Mail size={18} />
                 <a href="mailto:info@prometheanai.com" className="contact-link">
-                  info@prometheanai.com
-                </a>
-              </div>
-              <div className="contact-item">
-                <Phone size={18} />
-                <a href="tel:+15551234567" className="contact-link">
-                  +1 (555) 123-4567
+                  prometheanaiweb@gmail.com
                 </a>
               </div>
               <div className="contact-item">
                 <MapPin size={18} />
                 <span className="contact-text">
-                  San Francisco, CA 94105
+                  Warwick, United Kingdom
                 </span>
               </div>
             </div>

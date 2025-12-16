@@ -1,9 +1,9 @@
-import { Check, Zap } from 'lucide-react';
+import { Check, Zap, Globe, Settings, BarChart3, Bot, Workflow, Smartphone } from 'lucide-react';
 
 const services = [
   {
     name: 'Website Development',
-    icon: '🌐',
+    icon: Globe,
     packages: [
       {
         tier: 'Basic',
@@ -25,7 +25,7 @@ const services = [
   },
   {
     name: 'Software Solutions',
-    icon: '⚙️',
+    icon: Settings,
     packages: [
       {
         tier: 'Basic',
@@ -47,7 +47,7 @@ const services = [
   },
   {
     name: 'CRM Development',
-    icon: '📊',
+    icon: BarChart3,
     packages: [
       {
         tier: 'Basic',
@@ -69,7 +69,7 @@ const services = [
   },
   {
     name: 'AI Automations',
-    icon: '🤖',
+    icon: Bot,
     packages: [
       {
         tier: 'Basic',
@@ -91,7 +91,7 @@ const services = [
   },
   {
     name: 'Workflow Automations',
-    icon: '🔄',
+    icon: Workflow,
     packages: [
       {
         tier: 'Basic',
@@ -113,7 +113,7 @@ const services = [
   },
   {
     name: 'Mobile App Creation',
-    icon: '📱',
+    icon: Smartphone,
     packages: [
       {
         tier: 'Basic',
@@ -154,12 +154,16 @@ export function Pricing() {
         </div>
 
         <div className="pricing-services">
-          {services.map((service, idx) => (
-            <div key={idx} className="pricing-service-group">
-              <h3 className="service-group-title">
-                <span className="service-icon">{service.icon}</span>
-                {service.name}
-              </h3>
+          {services.map((service, idx) => {
+            const IconComponent = service.icon;
+            return (
+              <div key={idx} className="pricing-service-group">
+                <h3 className="service-group-title">
+                  <span className="service-icon">
+                    <IconComponent size={32} strokeWidth={1.5} />
+                  </span>
+                  {service.name}
+                </h3>
               
               <div className="pricing-packages">
                 {service.packages.map((pkg, pkgIdx) => (
@@ -187,7 +191,8 @@ export function Pricing() {
                 ))}
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
 
         <div className="add-ons-section">
@@ -360,29 +365,35 @@ export function Pricing() {
 
         .addon-header {
           display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
+          flex-direction: column;
+          gap: var(--space-sm);
           margin-bottom: var(--space-md);
-          gap: var(--space-md);
         }
 
         .addon-header h4 {
           color: var(--color-text-primary);
           font-size: 1.125rem;
           margin: 0;
+          line-height: 1.4;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          hyphens: auto;
         }
 
         .addon-price {
           font-weight: 600;
           color: var(--color-accent-bright);
-          white-space: nowrap;
           font-size: 0.875rem;
+          line-height: 1.4;
         }
 
         .addon-description {
           color: var(--color-text-tertiary);
           font-size: 0.9rem;
           margin: 0;
+          line-height: 1.6;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
 
         @media (max-width: 768px) {
