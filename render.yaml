@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: promethean-website
+    runtime: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: SENDGRID_FROM_EMAIL
+        sync: false
+      - key: SENDGRID_TO_EMAIL
+        sync: false

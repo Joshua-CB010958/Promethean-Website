@@ -131,7 +131,7 @@ export function BookingPage({ onBack }: BookingPageProps) {
         return service ? `${service.title} - ${packageTier.charAt(0).toUpperCase() + packageTier.slice(1)} Package` : serviceId;
       });
 
-      const response = await fetch('http://localhost:3002/api/send-consultation', {
+      const response = await fetch('/api/send-consultation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

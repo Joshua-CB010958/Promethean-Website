@@ -64,6 +64,7 @@
             "dev": "vite",
             "build": "vite build",
             "server": "node server.js",
-            "dev:all": "concurrently \"npm run dev\" \"npm run server\""
+            "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
+            "start": "node server.js"
       }
 }
