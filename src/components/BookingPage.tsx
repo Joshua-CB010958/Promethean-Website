@@ -4,51 +4,81 @@ import { Smartphone, Globe, Code2, Cpu, Zap, Workflow, Check, ArrowRight, ArrowL
 
 const services = [
   {
-    id: 'mobile',
-    icon: Smartphone,
-    title: 'Mobile App Development',
-    description: 'Native and cross-platform mobile applications for iOS and Android.',
-    features: ['iOS & Android', 'React Native', 'Flutter', 'Progressive Web Apps'],
-    color: '#6366f1',
-  },
-  {
-    id: 'web',
+    id: 'website',
     icon: Globe,
-    title: 'Custom Web Development',
-    description: 'Bespoke web applications tailored to your business requirements.',
-    features: ['React & Next.js', 'Full-stack Solutions', 'Cloud Architecture', 'API Development'],
-    color: '#8b5cf6',
-  },
-  {
-    id: 'template',
-    icon: Code2,
-    title: 'Template-Based Websites',
-    description: 'Fast, cost-effective website solutions using premium templates.',
-    features: ['Rapid Deployment', 'Cost-Effective', 'Brand Customization', 'SEO Optimized'],
-    color: '#06b6d4',
+    title: 'Website Development',
+    description: 'Professional websites from static pages to advanced custom designs.',
+    packages: {
+      basic: '£399 - 5-page static site',
+      growth: '£999 - CMS with SEO',
+      pro: '£2,499 - Custom design & animations'
+    },
+    features: ['Responsive Design', 'SEO Optimized', 'CMS Integration', 'E-commerce Ready'],
+    color: '#6366f1',
   },
   {
     id: 'software',
     icon: Cpu,
     title: 'Software Solutions',
-    description: 'Enterprise-grade software engineering for complex challenges.',
-    features: ['Custom Software', 'System Integration', 'Legacy Modernization', 'Cloud Migration'],
+    description: 'Custom software from simple web apps to enterprise systems.',
+    packages: {
+      basic: '£1,499 - Simple web app',
+      growth: '£4,999 - Multi-module system',
+      pro: '£9,999 - Enterprise architecture'
+    },
+    features: ['Custom Development', 'API Integrations', 'Admin Dashboard', 'Scalable Infrastructure'],
+    color: '#8b5cf6',
+  },
+  {
+    id: 'crm',
+    icon: Code2,
+    title: 'CRM Development',
+    description: 'Tailored CRM systems to manage your customer relationships.',
+    packages: {
+      basic: '£3,500 - CRM MVP',
+      growth: '£7,000-£9,000 - Advanced features',
+      pro: '£12,000-£16,000 - Enterprise CRM'
+    },
+    features: ['Lead Management', 'Deal Pipeline', 'Custom Workflows', 'Advanced Reporting'],
+    color: '#06b6d4',
+  },
+  {
+    id: 'mobile',
+    icon: Smartphone,
+    title: 'Mobile App Creation',
+    description: 'Native and cross-platform mobile applications.',
+    packages: {
+      basic: '£2,999 - MVP single platform',
+      growth: '£6,999 - Cross-platform app',
+      pro: '£14,999 - Complex features'
+    },
+    features: ['iOS & Android', 'React Native', 'Backend Integration', 'Admin Panel'],
     color: '#22d3ee',
   },
   {
     id: 'ai',
     icon: Zap,
-    title: 'AI Integration',
-    description: 'Custom AI models and intelligent automation solutions.',
-    features: ['Machine Learning', 'Natural Language Processing', 'Predictive Analytics', 'Computer Vision'],
+    title: 'AI Automations',
+    description: 'Intelligent AI-powered automation solutions.',
+    packages: {
+      basic: '£299 - Single AI automation',
+      growth: '£999 - Multi-step automations',
+      pro: '£2,999 - Custom AI workflows'
+    },
+    features: ['Custom AI Models', 'Autonomous Agents', 'API Integration', 'Error Handling'],
     color: '#818cf8',
   },
   {
-    id: 'automation',
+    id: 'workflow',
     icon: Workflow,
-    title: 'Automation & Workflows',
-    description: 'Intelligent business process automation and system orchestration.',
-    features: ['Process Automation', 'Workflow Design', 'Integration Platforms', 'RPA Solutions'],
+    title: 'Workflow Automations',
+    description: 'Streamline operations with intelligent workflow automation.',
+    packages: {
+      basic: '£199 - 3-step workflow',
+      growth: '£599 - 10-step workflow',
+      pro: '£1,999 - Full process automation'
+    },
+    features: ['Zapier/Make Integration', 'Custom Logic', 'Monitoring', 'Multiple Apps'],
     color: '#4f46e5',
   },
 ];
@@ -58,7 +88,7 @@ interface BookingPageProps {
 }
 
 export function BookingPage({ onBack }: BookingPageProps) {
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<Record<string, string>>({});
   const [step, setStep] = useState<'services' | 'details'>('services');
   const [formData, setFormData] = useState({
     name: '',
@@ -67,17 +97,28 @@ export function BookingPage({ onBack }: BookingPageProps) {
     phone: '',
     message: '',
   });
-
-  const toggleService = (serviceId: string) => {
-    setSelectedServices(prev =>
-      prev.includes(serviceId)
-        ? prev.filter(id => id !== serviceId)
-        : [...prev, serviceId]
-    );
-  };
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const selectServicePackage = (serviceId: string, packageTier: string) => {
+    setSelectedServices(prev => {
+      const newSelected = { ...prev };
+      if (newSelected[serviceId] === packageTier) {
+        delete newSelected[serviceId];
+      } else {
+        newSelected[serviceId] = packageTier;
+      }
+      return newSelected;
+    });
+  };
+
+  const isServiceSelected = (serviceId: string) => {
+    return serviceId in selectedServices;
+  };
+
+  const getSelectedPackage = (serviceId: string) => {
+    return selectedServices[serviceId];
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,10 +126,9 @@ export function BookingPage({ onBack }: BookingPageProps) {
     setSubmitStatus('idle');
 
     try {
-      // Get service titles instead of IDs
-      const serviceNames = selectedServices.map(serviceId => {
+      const serviceSelections = Object.entries(selectedServices).map(([serviceId, packageTier]) => {
         const service = services.find(s => s.id === serviceId);
-        return service ? service.title : serviceId;
+        return service ? `${service.title} - ${packageTier.charAt(0).toUpperCase() + packageTier.slice(1)} Package` : serviceId;
       });
 
       const response = await fetch('http://localhost:3002/api/send-consultation', {
@@ -98,7 +138,7 @@ export function BookingPage({ onBack }: BookingPageProps) {
         },
         body: JSON.stringify({
           ...formData,
-          selectedServices: serviceNames,
+          selectedServices: serviceSelections,
         }),
       });
 
@@ -106,7 +146,6 @@ export function BookingPage({ onBack }: BookingPageProps) {
 
       if (response.ok) {
         setSubmitStatus('success');
-        // Reset form after successful submission
         setTimeout(() => {
           setFormData({
             name: '',
@@ -115,7 +154,7 @@ export function BookingPage({ onBack }: BookingPageProps) {
             phone: '',
             message: '',
           });
-          setSelectedServices([]);
+          setSelectedServices({});
           setStep('services');
           setSubmitStatus('idle');
         }, 3000);
@@ -176,7 +215,8 @@ export function BookingPage({ onBack }: BookingPageProps) {
               <div className="services-selection">
                 {services.map((service, index) => {
                   const Icon = service.icon;
-                  const isSelected = selectedServices.includes(service.id);
+                  const isSelected = isServiceSelected(service.id);
+                  const selectedPackage = getSelectedPackage(service.id);
 
                   return (
                     <motion.div
@@ -185,19 +225,37 @@ export function BookingPage({ onBack }: BookingPageProps) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className={`service-selection-card ${isSelected ? 'selected' : ''}`}
-                      onClick={() => toggleService(service.id)}
                     >
                       <div className="service-selection-header">
                         <div className="service-selection-icon" style={{ background: service.color }}>
                           <Icon size={24} color="white" />
                         </div>
-                        <div className={`service-checkbox ${isSelected ? 'checked' : ''}`}>
-                          {isSelected && <Check size={18} />}
-                        </div>
+                        {isSelected && (
+                          <div className="service-checkbox checked">
+                            <Check size={18} />
+                          </div>
+                        )}
                       </div>
 
                       <h3 className="service-selection-title">{service.title}</h3>
                       <p className="service-selection-description">{service.description}</p>
+
+                      <div className="package-selector">
+                        <div className="package-selector-label">Select Package:</div>
+                        <div className="package-buttons">
+                          {(['basic', 'growth', 'pro'] as const).map((tier) => (
+                            <button
+                              key={tier}
+                              type="button"
+                              className={`package-button ${selectedPackage === tier ? 'active' : ''}`}
+                              onClick={() => selectServicePackage(service.id, tier)}
+                            >
+                              <span className="package-tier-name">{tier.charAt(0).toUpperCase() + tier.slice(1)}</span>
+                              <span className="package-tier-price">{service.packages[tier]}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
 
                       <ul className="service-selection-features">
                         {service.features.map((feature, i) => (
@@ -212,14 +270,14 @@ export function BookingPage({ onBack }: BookingPageProps) {
               <div className="booking-actions">
                 <button
                   className="btn btn-primary"
-                  disabled={selectedServices.length === 0}
+                  disabled={Object.keys(selectedServices).length === 0}
                   onClick={() => setStep('details')}
                 >
                   Continue
                   <ArrowRight size={20} />
                 </button>
-                {selectedServices.length === 0 && (
-                  <p className="booking-hint">Please select at least one service</p>
+                {Object.keys(selectedServices).length === 0 && (
+                  <p className="booking-hint">Please select at least one service package</p>
                 )}
               </div>
             </motion.div>
@@ -236,14 +294,17 @@ export function BookingPage({ onBack }: BookingPageProps) {
                 <div className="selected-services-summary">
                   <h3>Selected Services</h3>
                   <div className="selected-services-list">
-                    {selectedServices.map(serviceId => {
+                    {Object.entries(selectedServices).map(([serviceId, packageTier]) => {
                       const service = services.find(s => s.id === serviceId);
                       if (!service) return null;
                       const Icon = service.icon;
                       return (
                         <div key={serviceId} className="selected-service-chip">
                           <Icon size={16} />
-                          <span>{service.title}</span>
+                          <div className="selected-service-details">
+                            <span className="service-name">{service.title}</span>
+                            <span className="package-badge">{packageTier.charAt(0).toUpperCase() + packageTier.slice(1)} Package</span>
+                          </div>
                         </div>
                       );
                     })}
@@ -530,8 +591,62 @@ export function BookingPage({ onBack }: BookingPageProps) {
 
         .service-selection-description {
           color: var(--color-text-secondary);
-          margin-bottom: var(--space-lg);
+          margin-bottom: var(--space-md);
           font-size: 0.95rem;
+        }
+
+        .package-selector {
+          margin-bottom: var(--space-lg);
+        }
+
+        .package-selector-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: var(--color-text-primary);
+          margin-bottom: var(--space-sm);
+        }
+
+        .package-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-xs);
+        }
+
+        .package-button {
+          background: var(--color-surface);
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-md);
+          padding: var(--space-sm) var(--space-md);
+          cursor: pointer;
+          transition: all var(--transition-base);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          text-align: left;
+        }
+
+        .package-button:hover {
+          border-color: var(--color-primary-light);
+          background: rgba(99, 102, 241, 0.05);
+        }
+
+        .package-button.active {
+          border-color: var(--color-primary);
+          background: rgba(99, 102, 241, 0.1);
+          box-shadow: 0 0 0 1px var(--color-primary);
+        }
+
+        .package-tier-name {
+          font-weight: 600;
+          color: var(--color-text-primary);
+          font-size: 0.9rem;
+        }
+
+        .package-tier-price {
+          color: var(--color-accent-bright);
+          font-size: 0.875rem;
+          font-weight: 600;
         }
 
         .service-selection-features {
@@ -609,12 +724,35 @@ export function BookingPage({ onBack }: BookingPageProps) {
           display: flex;
           align-items: center;
           gap: var(--space-sm);
-          padding: var(--space-sm) var(--space-md);
+          padding: var(--space-md);
           background: var(--color-surface);
           border: 1px solid var(--color-border);
           border-radius: var(--radius-md);
           color: var(--color-text-secondary);
           font-size: 0.875rem;
+        }
+
+        .selected-service-details {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-xs);
+          flex: 1;
+        }
+
+        .service-name {
+          color: var(--color-text-primary);
+          font-weight: 600;
+        }
+
+        .package-badge {
+          display: inline-block;
+          padding: 2px var(--space-xs);
+          background: var(--gradient-primary);
+          color: white;
+          border-radius: var(--radius-sm);
+          font-size: 0.75rem;
+          font-weight: 600;
+          width: fit-content;
         }
 
         .booking-form {
@@ -669,22 +807,14 @@ export function BookingPage({ onBack }: BookingPageProps) {
         .form-actions {
           grid-column: 1 / -1;
           display: flex;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-md);
           padding-top: var(--space-lg);
         }
 
         .form-actions .btn {
           gap: var(--space-sm);
-        }
-
-        @media (max-width: 1024px) {
-          .booking-form-wrapper {
-            grid-template-columns: 1fr;
-          }
-
-          .selected-services-summary {
-            position: static;
-          }
         }
 
         .form-message {
@@ -706,6 +836,16 @@ export function BookingPage({ onBack }: BookingPageProps) {
           background: rgba(239, 68, 68, 0.1);
           border: 1px solid #ef4444;
           color: #ef4444;
+        }
+
+        @media (max-width: 1024px) {
+          .booking-form-wrapper {
+            grid-template-columns: 1fr;
+          }
+
+          .selected-services-summary {
+            position: static;
+          }
         }
 
         @media (max-width: 768px) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
 import { Hero3D } from './components/Hero3D';
 import { ServicesPhysics } from './components/ServicesPhysics';
+import { Pricing } from './components/Pricing';
 import { WhyUs } from './components/WhyUs';
 import { ScrollNarrative } from './components/ScrollNarrative';
 import { InteractivePortfolio } from './components/InteractivePortfolio';
@@ -62,6 +63,7 @@ export default function App() {
         <main>
           <Hero3D />
           <ServicesPhysics />
+          <Pricing />
           <WhyUs />
           <ScrollNarrative />
           <InteractivePortfolio />

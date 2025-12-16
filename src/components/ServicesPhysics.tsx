@@ -4,46 +4,52 @@ import { Smartphone, Globe, Code2, Cpu, Zap, Workflow } from 'lucide-react';
 
 const services = [
   {
-    icon: Smartphone,
-    title: 'Mobile App Development',
-    description: 'Native and cross-platform mobile applications built with cutting-edge frameworks for iOS and Android.',
-    features: ['iOS & Android', 'React Native', 'Flutter', 'Progressive Web Apps'],
-    color: '#6366f1',
-  },
-  {
     icon: Globe,
-    title: 'Custom Web Development',
-    description: 'Bespoke web applications tailored to your unique business requirements with modern technologies.',
-    features: ['React & Next.js', 'Full-stack Solutions', 'Cloud Architecture', 'API Development'],
-    color: '#8b5cf6',
-  },
-  {
-    icon: Code2,
-    title: 'Template-Based Websites',
-    description: 'Fast, cost-effective website solutions using premium templates customized to match your brand.',
-    features: ['Rapid Deployment', 'Cost-Effective', 'Brand Customization', 'SEO Optimized'],
-    color: '#06b6d4',
+    title: 'Website Development',
+    description: 'Professional websites from static pages to advanced custom designs with SEO and animations.',
+    features: ['From £399', 'Responsive Design', 'CMS Integration', 'SEO Optimized'],
+    color: '#6366f1',
+    pricing: 'Starting at £399'
   },
   {
     icon: Cpu,
     title: 'Software Solutions',
-    description: 'Enterprise-grade software engineering for complex business challenges and system integrations.',
-    features: ['Custom Software', 'System Integration', 'Legacy Modernization', 'Cloud Migration'],
+    description: 'Custom software from simple web apps to enterprise-grade systems with scalable infrastructure.',
+    features: ['From £1,499', 'API Integrations', 'Admin Dashboard', 'Custom Architecture'],
+    color: '#8b5cf6',
+    pricing: 'Starting at £1,499'
+  },
+  {
+    icon: Code2,
+    title: 'CRM Development',
+    description: 'Tailored CRM systems to manage leads, contacts, and deals with advanced workflows and reporting.',
+    features: ['From £3,500', 'Deal Pipeline', 'Custom Workflows', 'Advanced Reporting'],
+    color: '#06b6d4',
+    pricing: 'Starting at £3,500'
+  },
+  {
+    icon: Smartphone,
+    title: 'Mobile App Creation',
+    description: 'Native and cross-platform mobile applications with backend integration and admin panels.',
+    features: ['From £2,999', 'iOS & Android', 'Cross-platform', 'Backend Included'],
     color: '#22d3ee',
+    pricing: 'Starting at £2,999'
   },
   {
     icon: Zap,
-    title: 'AI Integration',
-    description: 'Harness the power of artificial intelligence with custom AI models and intelligent automation.',
-    features: ['Machine Learning', 'Natural Language Processing', 'Predictive Analytics', 'Computer Vision'],
+    title: 'AI Automations',
+    description: 'Intelligent AI-powered automation solutions from single tasks to custom autonomous workflows.',
+    features: ['From £299', 'Custom AI Models', 'Autonomous Agents', 'Multi-step Logic'],
     color: '#818cf8',
+    pricing: 'Starting at £299'
   },
   {
     icon: Workflow,
-    title: 'Automation & Workflows',
-    description: 'Streamline operations with intelligent business process automation and system orchestration.',
-    features: ['Process Automation', 'Workflow Design', 'Integration Platforms', 'RPA Solutions'],
+    title: 'Workflow Automations',
+    description: 'Streamline operations with intelligent workflow automation using Zapier, Make, and custom logic.',
+    features: ['From £199', 'Multi-app Integration', 'Custom Logic', 'Process Monitoring'],
     color: '#4f46e5',
+    pricing: 'Starting at £199'
   },
 ];
 

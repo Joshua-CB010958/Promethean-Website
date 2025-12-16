@@ -16,7 +16,7 @@ export function Navigation() {
 
   const navLinks = [
     { label: 'Services', href: '#services' },
-    { label: 'Why Us', href: '#why-us' },
+    { label: 'Pricing', href: '#pricing' },
     { label: 'Portfolio', href: '#portfolio' },
     { label: 'Process', href: '#process' },
     { label: 'Testimonials', href: '#testimonials' },
