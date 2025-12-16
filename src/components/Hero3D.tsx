@@ -1,47 +1,39 @@
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere, MeshDistortMaterial, Float } from '@react-three/drei';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import * as THREE from 'three';
 
 function AnimatedSphere() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<any>(null);
+  const meshRef = useRef<any>(null);
 
   useFrame(({ clock }) => {
     if (meshRef.current) {
       meshRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.3) * 0.2;
       meshRef.current.rotation.y += 0.003;
     }
-    if (materialRef.current) {
-      materialRef.current.distort = 0.3 + Math.sin(clock.getElapsedTime() * 0.5) * 0.1;
-    }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere ref={meshRef} args={[1, 100, 100]} scale={2.5}>
-        <MeshDistortMaterial
-          ref={materialRef}
+    <group>
+      <mesh ref={meshRef} scale={2.5}>
+        <sphereGeometry args={[1, 64, 64]} />
+        <meshStandardMaterial 
           color="#6366f1"
-          attach="material"
-          distort={0.4}
-          speed={2}
           roughness={0.2}
           metalness={0.8}
         />
-      </Sphere>
+      </mesh>
       
-      <Sphere args={[1.2, 100, 100]} scale={2.5}>
+      <mesh scale={2.8}>
+        <sphereGeometry args={[1, 32, 32]} />
         <meshBasicMaterial color="#8b5cf6" wireframe opacity={0.1} transparent />
-      </Sphere>
-    </Float>
+      </mesh>
+    </group>
   );
 }
 
 function Particles() {
-  const particlesRef = useRef<THREE.Points>(null);
+  const particlesRef = useRef<any>(null);
   
   const particles = useMemo(() => {
     const temp = [];
@@ -98,7 +90,6 @@ export function Hero3D() {
           <pointLight position={[-10, -10, -5]} intensity={0.5} color="#8b5cf6" />
           <AnimatedSphere />
           <Particles />
-          <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
         </Canvas>
       </div>
 
@@ -145,7 +136,7 @@ export function Hero3D() {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <motion.a 
-                href="#contact" 
+                href="#booking" 
                 className="btn btn-primary"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

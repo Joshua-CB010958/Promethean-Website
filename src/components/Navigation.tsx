@@ -40,7 +40,7 @@ export function Navigation() {
           </div>
 
           <div className="nav-actions-desktop">
-            <MagneticButton href="#contact" className="btn btn-primary">
+            <MagneticButton href="#booking" className="btn btn-primary">
               Book a Consultation
             </MagneticButton>
           </div>
@@ -68,7 +68,7 @@ export function Navigation() {
                 {link.label}
               </a>
             ))}
-            <a href="#contact" className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--space-md)' }}>
+            <a href="#booking" className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--space-md)' }}>
               Book a Consultation
             </a>
           </div>

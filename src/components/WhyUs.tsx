@@ -79,7 +79,7 @@ export function WhyUs() {
             <p className="cta-description">
               Join hundreds of successful companies leveraging our expertise to build the future.
             </p>
-            <a href="#contact" className="btn btn-primary">
+            <a href="#booking" className="btn btn-primary">
               Start Your Project Today
             </a>
           </div>
