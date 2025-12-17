@@ -1,0 +1,158 @@
+/* Mobile-Specific Enhancements */
+
+/* Prevent horizontal overflow */
+html,
+body,
+#root,
+.app,
+main,
+section {
+  max-width: 100%;
+}
+
+/* Ensure images are responsive */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile-only utilities */
+@media (max-width: 768px) {
+  /* Force full width for flex containers */
+  .hero-content,
+  .hero-content-wrapper,
+  .services-grid,
+  .pricing-packages,
+  .footer-main,
+  .container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Prevent text overflow */
+  h1, h2, h3, h4, h5, h6, p, span, a, li, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Ensure buttons are touch-friendly */
+  button,
+  .btn,
+  a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Remove animations on mobile for performance */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Hide complex 3D effects on mobile */
+  [style*="transform-style: preserve-3d"],
+  [style*="perspective"] {
+    transform-style: flat !important;
+    perspective: none !important;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  /* Extra small font adjustments */
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Tighter spacing */
+  .section {
+    padding: var(--space-xl) 0 !important;
+  }
+
+  .container {
+    padding-left: var(--space-sm) !important;
+    padding-right: var(--space-sm) !important;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce vertical spacing in landscape */
+  .hero-3d-section,
+  .hero-section {
+    min-height: auto !important;
+    padding: var(--space-2xl) 0 !important;
+  }
+
+  .section {
+    padding: var(--space-2xl) 0 !important;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix for Safari mobile viewport height issues */
+  .hero-3d-section,
+  .hero-section {
+    min-height: -webkit-fill-available;
+  }
+
+  /* Improve touch scrolling */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Android Chrome specific fixes */
+@media screen and (max-width: 768px) {
+  /* Prevent zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Fix for notched devices (iPhone X+) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Mobile-friendly hover states (convert to active states) */
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .card:hover,
+  a:hover {
+    transform: none !important;
+  }
+
+  .btn:active,
+  .card:active,
+  a:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+}

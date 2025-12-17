@@ -194,23 +194,49 @@ export function ServicesPhysics() {
 
       <style>{`
         .services-header {
-          margin-bottom: var(--space-4xl);
-          padding: 0 var(--space-xl);
+          margin-bottom: var(--space-3xl);
+          padding: 0 var(--space-md);
           text-align: center;
           max-width: 1200px;
           margin-left: auto;
           margin-right: auto;
         }
 
+        @media (min-width: 768px) {
+          .services-header {
+            margin-bottom: var(--space-4xl);
+            padding: 0 var(--space-xl);
+          }
+        }
+
         .services-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: var(--space-xl);
-          padding: 0 var(--space-xl);
+          grid-template-columns: 1fr;
+          gap: var(--space-lg);
+          padding: 0 var(--space-md);
           perspective: 1000px;
           justify-items: center;
           max-width: 1400px;
           margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+          .services-grid {
+            gap: var(--space-xl);
+            padding: 0 var(--space-lg);
+          }
+        }
+
+        @media (min-width: 768px) {
+          .services-grid {
+            padding: 0 var(--space-xl);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .services-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          }
         }
 
         .service-card-wrapper {
@@ -276,8 +302,40 @@ export function ServicesPhysics() {
         }
 
         @media (max-width: 768px) {
-          .services-grid {
-            grid-template-columns: 1fr;
+          .service-card-wrapper {
+            max-width: 100%;
+          }
+
+          .service-card {
+            padding: var(--space-lg);
+          }
+
+          .service-title {
+            font-size: 1.375rem;
+          }
+
+          .service-description {
+            font-size: 0.9375rem;
+          }
+
+          .service-feature {
+            font-size: 0.875rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .service-card {
+            padding: var(--space-md);
+          }
+
+          .service-icon-wrapper {
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .service-icon-wrapper svg {
+            width: 22px;
+            height: 22px;
           }
         }
       `}</style>

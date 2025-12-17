@@ -81,9 +81,12 @@ export function Navigation() {
           top: 0;
           left: 0;
           right: 0;
+          width: 100%;
+          max-width: 100vw;
           z-index: 1000;
           padding: var(--space-lg) 0;
           transition: all var(--transition-base);
+          overflow-x: hidden;
         }
 
         .nav-scrolled {
@@ -99,7 +102,16 @@ export function Navigation() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 var(--space-xl);
+          padding: 0 var(--space-md);
+          max-width: 100%;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+          .nav-content {
+            padding: 0 var(--space-xl);
+          }
         }
 
         .nav-logo {
@@ -109,12 +121,19 @@ export function Navigation() {
         }
 
         .logo-text {
-          font-size: 1.5rem;
+          font-size: 1.125rem;
           font-weight: 700;
           background: var(--gradient-primary);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+          white-space: nowrap;
+        }
+
+        @media (min-width: 640px) {
+          .logo-text {
+            font-size: 1.5rem;
+          }
         }
 
         .nav-links-desktop {
@@ -145,15 +164,20 @@ export function Navigation() {
           color: var(--color-text-primary);
           cursor: pointer;
           padding: var(--space-xs);
+          min-width: 44px;
+          min-height: 44px;
+          flex-shrink: 0;
         }
 
         .nav-mobile-menu {
           display: flex;
           flex-direction: column;
-          padding: var(--space-xl);
+          padding: var(--space-lg);
           background: var(--color-surface-elevated);
           border-top: 1px solid var(--color-border);
           margin-top: var(--space-md);
+          max-width: 100vw;
+          overflow-x: hidden;
         }
 
         .nav-mobile-link {

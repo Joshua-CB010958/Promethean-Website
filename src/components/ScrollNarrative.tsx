@@ -52,20 +52,20 @@ export function ScrollNarrative() {
           
           const opacity = useTransform(
             scrollYProgressSpring,
-            [start - 0.1, start, end - 0.2, end],
+            [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
             [0, 1, 1, 0]
           );
           
           const scale = useTransform(
             scrollYProgressSpring,
-            [start - 0.1, start, end - 0.2, end],
-            [0.8, 1, 1, 0.8]
+            [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
+            [0.9, 1, 1, 0.9]
           );
           
           const y = useTransform(
             scrollYProgressSpring,
-            [start - 0.1, start, end - 0.2, end],
-            [100, 0, 0, -100]
+            [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
+            [50, 0, 0, -50]
           );
 
           const Icon = scene.icon;
@@ -134,6 +134,7 @@ export function ScrollNarrative() {
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          z-index: 1;
         }
 
         .narrative-scene {
@@ -146,10 +147,17 @@ export function ScrollNarrative() {
           align-items: center;
           justify-content: center;
           padding: var(--space-xl);
+          pointer-events: none;
+          will-change: opacity, transform;
+        }
+        
+        .narrative-scene > * {
+          pointer-events: auto;
         }
 
         .scene-content {
           max-width: 48rem;
+          width: 100%;
           text-align: center;
           padding: var(--space-3xl);
           background: var(--glass-background);
@@ -158,6 +166,8 @@ export function ScrollNarrative() {
           border: 1px solid var(--glass-border);
           border-radius: var(--radius-2xl);
           box-shadow: var(--shadow-xl);
+          position: relative;
+          z-index: 1;
         }
 
         .scene-icon-wrapper {
@@ -223,26 +233,53 @@ export function ScrollNarrative() {
             height: 300vh;
           }
 
+          .narrative-scene {
+            padding: var(--space-md);
+          }
+
           .scene-content {
             padding: var(--space-2xl) var(--space-lg);
+            max-width: 100%;
+            box-sizing: border-box;
           }
 
           .scene-icon-wrapper {
-            width: 6rem;
-            height: 6rem;
+            width: 5rem;
+            height: 5rem;
+            margin-bottom: var(--space-lg);
           }
 
-          .scene-icon-wrapper :global(svg) {
-            width: 48px;
-            height: 48px;
+          .scene-icon-wrapper svg {
+            width: 40px;
+            height: 40px;
           }
 
           .stat-value {
-            font-size: 3rem;
+            font-size: 2.5rem;
           }
 
           .scene-description {
-            font-size: 1rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .scene-content {
+            padding: var(--space-lg) var(--space-md);
+          }
+          
+          .scene-icon-wrapper {
+            width: 4rem;
+            height: 4rem;
+          }
+          
+          .stat-value {
+            font-size: 2rem;
+          }
+
+          .scene-description {
+            font-size: 0.875rem;
           }
         }
       `}</style>

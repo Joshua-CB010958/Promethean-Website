@@ -1,0 +1,68 @@
+/* Critical Overflow Fix - Load Last */
+/* This file ensures NO horizontal scrolling on mobile */
+
+html {
+  overflow-x: clip;
+  width: 100%;
+}
+
+body {
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#root,
+.app,
+main {
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Only hide horizontal overflow on sections except scroll narrative */
+section:not(.scroll-narrative) {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+.container {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Navigation specific fix */
+.nav {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.nav-content {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Hero section fix */
+.hero-3d-section,
+.hero-3d-content,
+.hero-content-wrapper {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Mobile specific */
+@media (max-width: 768px) {
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Only prevent horizontal scroll, allow vertical */
+  html,
+  body {
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+  
+  section:not(.scroll-narrative) {
+    overflow-x: clip;
+  }
+}

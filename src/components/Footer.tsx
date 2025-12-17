@@ -150,10 +150,25 @@ export function Footer() {
 
         .footer-main {
           display: grid;
-          grid-template-columns: 1.5fr 2fr 1fr;
-          gap: var(--space-3xl);
-          padding: 0 var(--space-xl);
-          margin-bottom: var(--space-3xl);
+          grid-template-columns: 1fr;
+          gap: var(--space-2xl);
+          padding: 0 var(--space-md);
+          margin-bottom: var(--space-2xl);
+        }
+
+        @media (min-width: 768px) {
+          .footer-main {
+            padding: 0 var(--space-lg);
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-3xl);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .footer-main {
+            grid-template-columns: 1.5fr 2fr 1fr;
+            padding: 0 var(--space-xl);
+          }
         }
 
         .footer-brand {
@@ -291,33 +306,60 @@ export function Footer() {
         }
 
         @media (max-width: 1024px) {
-          .footer-main {
-            grid-template-columns: 1fr;
-            gap: var(--space-2xl);
+          .footer-brand {
+            max-width: 100%;
           }
 
           .footer-links-group {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
           }
+        }
 
-          .footer-brand {
-            max-width: 100%;
+        @media (min-width: 640px) and (max-width: 1024px) {
+          .footer-links-group {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
 
         @media (max-width: 768px) {
-          .footer-links-group {
-            grid-template-columns: 1fr;
+          .footer {
+            padding: var(--space-3xl) 0 var(--space-lg);
           }
 
           .footer-bottom {
             flex-direction: column;
             text-align: center;
+            padding: var(--space-lg);
           }
 
           .footer-bottom-links {
             flex-wrap: wrap;
             justify-content: center;
+          }
+
+          .footer-social {
+            justify-content: center;
+          }
+
+          .contact-item {
+            font-size: 0.875rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .footer-links-group {
+            gap: var(--space-lg);
+          }
+
+          .social-link {
+            width: 2.25rem;
+            height: 2.25rem;
+          }
+
+          .social-link svg {
+            width: 18px;
+            height: 18px;
           }
         }
       `}</style>

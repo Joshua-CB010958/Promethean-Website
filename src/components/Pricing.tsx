@@ -245,21 +245,42 @@ export function Pricing() {
 
         .pricing-packages {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: var(--space-xl);
+          grid-template-columns: 1fr;
+          gap: var(--space-lg);
           max-width: 1200px;
           margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+          .pricing-packages {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-xl);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .pricing-packages {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          }
         }
 
         .pricing-card {
           background: var(--color-surface-elevated);
           border: 2px solid var(--color-border);
           border-radius: var(--radius-xl);
-          padding: var(--space-2xl);
+          padding: var(--space-lg);
           display: flex;
           flex-direction: column;
           position: relative;
           transition: all var(--transition-base);
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+
+        @media (min-width: 640px) {
+          .pricing-card {
+            padding: var(--space-2xl);
+          }
         }
 
         .pricing-card:hover {
@@ -327,14 +348,39 @@ export function Pricing() {
         .add-ons-section {
           background: var(--color-background);
           border-radius: var(--radius-2xl);
-          padding: var(--space-3xl);
+          padding: var(--space-lg);
           text-align: center;
         }
 
-        .add-ons-title {
-          color: var(--color-text-primary);
-          margin-bottom: var(--space-md);
+        @media (min-width: 640px) {
+          .add-ons-section {
+            padding: var(--space-2xl);
+          }
         }
+
+        @media (min-width: 768px) {
+          .add-ons-section {
+            padding: var(--space-3xl);
+          }
+        }
+
+        .add-ons-title {1fr;
+          gap: var(--space-md);
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+          .add-ons-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .add-ons-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          }
 
         .add-ons-subtitle {
           color: var(--color-text-secondary);
@@ -384,17 +430,45 @@ export function Pricing() {
           font-weight: 600;
           color: var(--color-accent-bright);
           font-size: 0.875rem;
-          line-height: 1.4;
+          line-heigservices {
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-4xl);
+          }
+
+          .service-group-title {
+            flex-direction: column;
+            gap: var(--space-sm);
+            font-size: 1.5rem;
+          }
+
+          .service-icon {
+            font-size: 1.75rem;
+          }
+
+          .package-price {
+            font-size: 1.75rem;
+          }
+
+          .addon-card {
+            padding: var(--space-lg);
+          }
         }
 
-        .addon-description {
-          color: var(--color-text-tertiary);
-          font-size: 0.9rem;
-          margin: 0;
-          line-height: 1.6;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-        }
+        @media (max-width: 480px) {
+          .pricing-card {
+            padding: var(--space-md);
+          }
+
+          .package-features li {
+            font-size: 0.875rem;
+          }
+
+          .addon-header h4 {
+            font-size: 1rem;
+          }
+
+          .addon-description {
+            font-size: 0.875rem
 
         @media (max-width: 768px) {
           .pricing-packages {
